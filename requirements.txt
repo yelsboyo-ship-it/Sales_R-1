@@ -1,0 +1,3 @@
+# The application uses Python's standard library for its HTTP server.
+# Sentry is optional at runtime and becomes active when SENTRY_DSN is configured.
+sentry-sdk>=2.0,<3

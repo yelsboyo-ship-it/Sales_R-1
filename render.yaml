@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: onestop-veggies
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python serve_sales_ledger.py
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: SUPA_URL
+        sync: false
+      - key: SUPA_KEY
+        sync: false
