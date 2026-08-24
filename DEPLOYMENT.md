@@ -40,8 +40,9 @@ Render serves the HTML, CSS, and JavaScript only. The browser connects to Supaba
 3. In the Supabase SQL Editor, run `supabase_schema.sql` first.
 4. Run the feature scripts in dependency order: security/profile scripts, bank-account scripts, sales confirmation/approval scripts, delivery scripts, stock-transfer scripts, then the public portal/storage scripts. Run each script only once unless it is explicitly written as an idempotent migration.
 5. In **Authentication > URL Configuration**, add the final Render URL to **Site URL** and add the same URL plus any local development URL to **Redirect URLs**.
-6. In **Storage**, create the buckets referenced by the schema/scripts and confirm their policies. Do not make private buckets public just to hide an application error.
-7. Create at least one administrator or manager profile after the first user signs up. Confirm its `profiles.role` matches the role expected by the SQL policies.
+6. To use the six-digit password reset flow, open **Authentication > Email Templates > Reset Password**, replace the reset-link markup with the `{{ .Token }}` variable, and save the template. The reset form calls Supabase recovery, verifies that token with type `recovery`, and then updates the password.
+7. In **Storage**, create the buckets referenced by the schema/scripts and confirm their policies. Do not make private buckets public just to hide an application error.
+8. Create at least one administrator or manager profile after the first user signs up. Confirm its `profiles.role` matches the role expected by the SQL policies.
 
 ## 2. Deploy on Render
 

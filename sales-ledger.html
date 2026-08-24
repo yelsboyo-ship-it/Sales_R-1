@@ -1975,7 +1975,7 @@ async function confirmResetOtp(){
   }
 
   try{
-    // Verify the OTP — this confirms it's really you and returns a session.
+    // Verify the recovery OTP and use the returned session to change the password.
     const verifyRes = await fetch(authApi('verify'), {
       method: 'POST',
       headers: {
