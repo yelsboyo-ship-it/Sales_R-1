@@ -196,7 +196,7 @@ def json_error(handler: SimpleHTTPRequestHandler, status: int, code: str, messag
     }
     if details:
         payload['error']['details'] = details
-    log_event('error', 'API error response generated', status=status, code=code, message=message, details=details or {})
+    log_event('error', 'API error response generated', status=status, code=code, error_message=message, details=details or {})
     if sentry_sdk:
         sentry_sdk.capture_message(f'{code}: {message}', level='error')
     json_response(handler, payload, status)
@@ -311,7 +311,8 @@ class SalesLedgerHandler(SimpleHTTPRequestHandler):
         if parsed.path.startswith(f'/api/{API_VERSION}/'):
             REQUEST_COUNTERS['client_error'] += 1
             return json_error(self, 405, 'method_not_allowed', 'POST is not supported for this API endpoint.')
-        return super().do_POST()
+        REQUEST_COUNTERS['client_error'] += 1
+        return json_error(self, 404, 'not_found', 'Not found.')
 
     def serve_sales_ledger(self) -> None:
         html_path = ROOT / 'sales-ledger.html'
