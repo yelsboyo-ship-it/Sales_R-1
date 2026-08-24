@@ -33,6 +33,14 @@ class ServeSalesLedgerConfigTests(unittest.TestCase):
                     {"SUPA_URL": "https://env.example.supabase.co", "SUPA_KEY": "env-key"},
                 )
 
+    def test_build_supabase_config_accepts_standard_environment_names(self):
+        with patch.dict(os.environ, {"SUPABASE_URL": "https://env.example.supabase.co/", "SUPABASE_ANON_KEY": "env-key"}, clear=False):
+            with patch("serve_sales_ledger.ENV_VALUES", {}):
+                self.assertEqual(
+                    build_supabase_config(),
+                    {"SUPA_URL": "https://env.example.supabase.co", "SUPA_KEY": "env-key"},
+                )
+
 
 class ServeSalesLedgerMonitoringTests(unittest.TestCase):
     def test_public_asset_allowlist_blocks_source_and_backup_files(self):

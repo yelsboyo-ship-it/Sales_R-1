@@ -119,11 +119,11 @@ def build_supabase_config(env_values: dict[str, str] | None = None) -> dict[str,
     values = dict(ENV_VALUES if env_values is None else env_values)
     if env_values is None:
         values.update({
-            'SUPA_URL': os.environ.get('SUPA_URL', values.get('SUPA_URL', '')),
-            'SUPA_KEY': os.environ.get('SUPA_KEY', values.get('SUPA_KEY', '')),
+            'SUPA_URL': os.environ.get('SUPA_URL', os.environ.get('SUPABASE_URL', values.get('SUPA_URL', ''))),
+            'SUPA_KEY': os.environ.get('SUPA_KEY', os.environ.get('SUPABASE_ANON_KEY', values.get('SUPA_KEY', ''))),
         })
     return {
-        'SUPA_URL': (values.get('SUPA_URL') or '').strip(),
+        'SUPA_URL': (values.get('SUPA_URL') or '').strip().rstrip('/'),
         'SUPA_KEY': (values.get('SUPA_KEY') or '').strip(),
     }
 

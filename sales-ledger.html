@@ -1792,7 +1792,12 @@ function titleCase(s){ if(!s) return s; return s.toLowerCase().split(' ').map(w=
 function lowerTrim(s){ return s ? String(s).trim().toLowerCase() : s; }
 
 function api(path){ return `${SUPA_URL}/rest/v1/${path}`; }
-function authApi(path){ return `${SUPA_URL}/auth/v1/${path}`; }
+function authApi(path){
+  if(!/^https:\/\/[^/]+\.supabase\.co$/i.test(SUPA_URL) || !SUPA_KEY){
+    throw new Error('Supabase is not configured for this deployment. Set SUPA_URL and SUPA_KEY in Render environment variables, then redeploy.');
+  }
+  return `${SUPA_URL}/auth/v1/${path}`;
+}
 function isAuthenticatedSession(){
   return Boolean(ACCESS_TOKEN || REFRESH_TOKEN || USER_ID);
 }
