@@ -1149,8 +1149,8 @@ document.addEventListener('click', event => {
   if(toggleButton) togglePasswordVisibility(toggleButton);
 });
 
-const SUPA_URL = getEnvValue('SUPA_URL', '');
-const SUPA_KEY = getEnvValue('SUPA_KEY', '');
+const SUPA_URL = getEnvValue('SUPA_URL', 'https://pxwbmrxxjaynyoapwyxx.supabase.co').replace(/\/$/, '');
+const SUPA_KEY = getEnvValue('SUPA_KEY', '') || getEnvValue('SUPABASE_PUBLISHABLE_KEY', '') || getEnvValue('SUPABASE_ANON_KEY', '');
 const nativeFetch = window.fetch ? window.fetch.bind(window) : null;
 const INACTIVITY_WARNING_MS = 90000;
 const INACTIVITY_TIMEOUT_MS = 120000;

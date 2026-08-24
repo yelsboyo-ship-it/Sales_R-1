@@ -28,6 +28,7 @@ API_VERSION = 'v1'
 REQUEST_TIMEOUT = 10
 RATE_LIMIT_WINDOW_SECONDS = 60
 RATE_LIMIT_MAX_REQUESTS = 60
+DEFAULT_SUPABASE_URL = 'https://pxwbmrxxjaynyoapwyxx.supabase.co'
 
 logging.basicConfig(
     level=logging.INFO,
@@ -119,8 +120,14 @@ def build_supabase_config(env_values: dict[str, str] | None = None) -> dict[str,
     values = dict(ENV_VALUES if env_values is None else env_values)
     if env_values is None:
         values.update({
-            'SUPA_URL': os.environ.get('SUPA_URL', os.environ.get('SUPABASE_URL', values.get('SUPA_URL', ''))),
-            'SUPA_KEY': os.environ.get('SUPA_KEY', os.environ.get('SUPABASE_ANON_KEY', values.get('SUPA_KEY', ''))),
+            'SUPA_URL': os.environ.get('SUPA_URL', os.environ.get('SUPABASE_URL', values.get('SUPA_URL', DEFAULT_SUPABASE_URL))),
+            'SUPA_KEY': os.environ.get(
+                'SUPA_KEY',
+                os.environ.get(
+                    'SUPABASE_PUBLISHABLE_KEY',
+                    os.environ.get('SUPABASE_ANON_KEY', values.get('SUPA_KEY', '')),
+                ),
+            ),
         })
     return {
         'SUPA_URL': (values.get('SUPA_URL') or '').strip().rstrip('/'),

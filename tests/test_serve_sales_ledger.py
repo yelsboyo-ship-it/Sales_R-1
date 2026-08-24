@@ -23,7 +23,10 @@ class ServeSalesLedgerConfigTests(unittest.TestCase):
         )
 
     def test_build_supabase_config_returns_blank_when_values_are_missing(self):
-        self.assertEqual(build_supabase_config({}), {"SUPA_URL": "", "SUPA_KEY": ""})
+        self.assertEqual(
+            build_supabase_config({}),
+            {"SUPA_URL": "", "SUPA_KEY": ""},
+        )
 
     def test_build_supabase_config_prefers_process_environment_for_default_loading(self):
         with patch.dict(os.environ, {"SUPA_URL": "https://env.example.supabase.co", "SUPA_KEY": "env-key"}, clear=False):
@@ -40,6 +43,11 @@ class ServeSalesLedgerConfigTests(unittest.TestCase):
                     build_supabase_config(),
                     {"SUPA_URL": "https://env.example.supabase.co", "SUPA_KEY": "env-key"},
                 )
+
+    def test_build_supabase_config_accepts_publishable_key_name(self):
+        with patch.dict(os.environ, {"SUPABASE_PUBLISHABLE_KEY": "publishable-key"}, clear=False):
+            with patch("serve_sales_ledger.ENV_VALUES", {}):
+                self.assertEqual(build_supabase_config()["SUPA_KEY"], "publishable-key")
 
 
 class ServeSalesLedgerMonitoringTests(unittest.TestCase):
